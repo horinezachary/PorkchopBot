@@ -1,0 +1,24 @@
+{
+  "name": "porkchopbot",
+  "version": "0.0.1",
+  "description": "Discord Utility Bot",
+  "main": "bot.js",
+  "scripts": {
+    "test": "node bot.js",
+    "start": "node bot.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/horinezachary/porkchopBot.git"
+  },
+  "author": "Zachary Horine",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/horinezachary/porkchopBot/issues"
+  },
+  "homepage": "https://github.com/horinezachary/porkchopBot#readme",
+  "dependencies": {
+    "discord.js": "^12.4.1",
+    "sqlite3": "^5.0.0"
+  }
+}
