@@ -97,8 +97,6 @@ module.exports = class {
         '** with this error:\n```LDIF\n' + err.stack +'```');
     });
 
-
-    //console.log(message.content);
     /*
     if (message.content.startsWith(PREFIX+"embed")  && hasPermission(message.channel, message.author)) {
       let jsonString = message.content.substr(message.content.indexOf("{"), message.content.lastIndexOf("}"));
