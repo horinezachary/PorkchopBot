@@ -14,7 +14,10 @@ class embed extends Command {
   async run(bot, msg, args, level) {
     let channel = msg.channel;
     if (args[0] && args[0].match(/^(?:<#)?[0-9]{18}(?:>)?$/g)) { //is a channel id or an id in general
-      let channel = await msg.guild.channels.cache.get(args[0].match(/(?:<#)?[0-9]{18}(?:>)?/g));
+      let argChannel = await msg.guild.channels.cache.get(args[0].match(/(?:<#)?[0-9]{18}(?:>)?/g));
+      if (argChannel) {
+        channel = argChannel;
+      }
     }
     let jsonString = msg.content.substr(msg.content.indexOf("{"), msg.content.lastIndexOf("}"));
     let jsonObj = JSON.parse(jsonString);
