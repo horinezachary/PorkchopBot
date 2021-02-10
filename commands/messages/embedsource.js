@@ -32,7 +32,7 @@ class embedsource extends Command {
         }
       }
     }
-    channel.send({embed: new MessageEmbed()
+    msg.channel.send({embed: new MessageEmbed()
       .setAuthor("Embed Source: "+message.id, bot.user.avatarURL())
       .setColor(bot.config.DEFAULT_EMBED_COLOR)
 //      .setDescription(JSON.stringify(message.embeds))
