@@ -32,8 +32,6 @@ class embedsource extends Command {
         }
       }
     }
-    console.log("c: "+channel);
-    console.log(message);
     channel.send({embed: new MessageEmbed()
       .setAuthor("Embed Source: "+message.id, bot.user.avatarURL())
       .setColor(bot.config.DEFAULT_EMBED_COLOR)

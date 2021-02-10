@@ -7,7 +7,7 @@ class ping extends Command {
       description: "Test your connection to the bot!",
       usage: "ping",
       aliases: [],
-      permRequired: "BOT_ADMIN"
+      permRequired: "BOTADMIN"
     });
   }
 

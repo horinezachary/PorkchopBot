@@ -21,7 +21,16 @@ class embed extends Command {
     }
     let jsonString = msg.content.substr(msg.content.indexOf("{"), msg.content.lastIndexOf("}"));
     let jsonObj = JSON.parse(jsonString);
-    channel.send({embed: jsonObj});
+    if (jsonObj.image.url == null) {
+      delete jsonObj.image;
+    }
+    if (jsonObj.thumbnail.url == null) {
+      delete jsonObj.thumbnail;
+    }
+    console.log(jsonObj);
+    channel.send({embed: jsonObj}).then((message) => {
+      bot.database.newEmbed(msg.guild.id,channel.id,message.id);
+    });
   }
 }
 
