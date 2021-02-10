@@ -93,3 +93,56 @@ exports.getType = function (filepath) {
   }
   return filepath;
 };
+
+exports.tagReplacer = async function (member, guild, embed) {
+  guild.owner = await guild.members.fetch(guild.ownerID);
+  let tags = {
+    server: {
+      memberCount: guild.memberCount,
+      id: guild.id,
+      name: guild.name,
+      icon: "https://cdn.discordapp.com/icons/"+guild.id+"/"+guild.icon + ".png?size=512",
+      splash: "https://cdn.discordapp.com/splashes/"+guild.id+"/"+guild.splash+".png?size=2048",
+      banner: "https://cdn.discordapp.com/banners/"+guild.id+"/"+guild.banner+".png?size=1024",
+      discoverySplash: "https://cdn.discordapp.com/discovery-splashes/"+guild.id+"/"+guild.discoverySplash+".png?size=1280",
+      region: guild.region,
+      shardID: guild.shardID,
+      owner: {
+        id: guild.owner.user.id,
+        tag: guild.owner.user.username+"#"+guild.owner.user.discriminator,
+        mention: "<@"+guild.owner.user.id+">",
+        username: guild.owner.user.username,
+        discriminator: guild.owner.user.discriminator,
+        bot: guild.owner.user.bot,
+        avatar: "https://cdn.discordapp.com/avatars/"+guild.owner.user.id+"/"+guild.owner.user.avatar+".png?size=512"
+      }
+    },
+    member: {
+      id: member.user.id,
+      tag: member.user.username+"#"+member.user.discriminator,
+      mention: "<@"+member.user.id+">",
+      username: member.user.username,
+      discriminator: member.user.discriminator,
+      bot: member.user.bot,
+      avatar: "https://cdn.discordapp.com/avatars/"+member.user.id+"/"+member.user.avatar+".png?size=512"
+    },
+    timestamp: new Date().getTime()
+  }
+  if (guild.icon == null) {
+    tags.server.icon = "";
+  }
+  if (guild.banner == null) {
+    tags.server.banner = "";
+  }
+  if (guild.splash == null) {
+    tags.server.splash = "";
+  }
+  if (guild.discoverySplash == null) {
+    tags.server.discoverySplash = "";
+  }
+  embed = embed.replace(/\{\{member.([a-zA-Z]*)\}\}/g,(match,p1) => {return tags.member[p1];});
+  embed = embed.replace(/\{\{server.([a-zA-Z]*)\}\}/g,(match,p1) => {return tags.server[p1];});
+  embed = embed.replace(/\{\{server.owner.([a-zA-Z]*)\}\}/g,(match,p1) => {return tags.server.owner[p1];});
+  embed = embed.replace(/\{\{(timestamp)\}\}/g,(match,p1) => {return tags[p1];});
+  return embed;
+};

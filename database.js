@@ -44,6 +44,19 @@ class Database {
         return blacklist;
       }
     };
+
+    this.newEmbed = async (guild_id, channel_id, message_id) => {
+      this.query(`INSERT INTO embeds(guild_id,channel_id,message_id) VALUES('${guild_id}','${channel_id}','${message_id}')`);
+    }
+
+    this.getGuildWelcome = async (guild_id) => {
+      let [welcome] = await this.query(`SELECT * FROM guild_welcome WHERE guild_id = '${guild_id}'`);
+      if (!welcome) {
+        return false;
+      } else {
+        return welcome[0];
+      }
+    };
   }
 }
 
