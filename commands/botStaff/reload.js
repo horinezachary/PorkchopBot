@@ -7,7 +7,7 @@ class reload extends Command {
       description: "",
       usage: "reload",
       aliases: [],
-      permLevel: 8
+      permRequired: "BOTADMIN"
     });
   }
 
