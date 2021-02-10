@@ -16,6 +16,8 @@ module.exports = class {
   }
 
   async run(bot,member) {
+
+    //welcome
     let welcome = await bot.database.getGuildWelcome(member.guild.id);
     if (welcome) {
       console.log(welcome);
@@ -37,8 +39,7 @@ SERVER
   server.id
   server.name
   server.icon
-  if (features.contains("INVITE_SPLASH"))
-    server.splash
+  server.splash
   server.region
   server.shardID
   server.banner
@@ -58,6 +59,5 @@ MEMBER
   member.bot
   member.discriminator
   member.tag
-  member.avatarURL
-
+  member.avatar
 */
