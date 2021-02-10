@@ -16,7 +16,7 @@ class PorkchopBot extends Client {
     super(options);
 
     this.config = require("./config.js");
-    this.logger = require("./util/Logger");
+    this.logger = require("./util/logger");
     this.utils = require("./util/utils");
     this.commands = new Collection();
     this.events = new Collection();
