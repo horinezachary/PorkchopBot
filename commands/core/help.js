@@ -8,7 +8,7 @@ class help extends Command {
       description: "View a list of the bot's commands and what they do!",
       usage: "help <optional-command-name>",
       aliases: ["h"],
-      permLevel: 1
+      permRequired: "USER"
     });
   }
 

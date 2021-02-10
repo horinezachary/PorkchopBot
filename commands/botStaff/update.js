@@ -7,7 +7,7 @@ class update extends Command {
       description: "Updates the bot from the GitHub repository.",
       usage: "update",
       aliases: ["pull"],
-      permLevel: 8
+      permRequired: "BOTADMIN"
     });
   }
 
