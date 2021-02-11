@@ -58,6 +58,7 @@ class help extends Command {
           }
           output += `\`\`${c.help.name}\`\` `;
         });
+        console.log(currentCategory+","+output);
         help.addField(currentCategory + " Commands:", output);
         if (msg.channel.permissionsFor(msg.guild.me).has("EMBED_LINKS")) {
           msg.channel.send(help);
@@ -65,6 +66,7 @@ class help extends Command {
           msg.author.send(help);
         }
       } catch (error) {
+        console.log(error);
         bot.logger.error(error);
       }
     } else {
