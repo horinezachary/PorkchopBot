@@ -13,11 +13,11 @@ class help extends Command {
   }
 
   async run(bot, msg, args, level) {
+    let prefix = await bot.utils.getPrefixes(bot, msg.guild);
+    prefix = prefix[0];
     if (!args[0]) {
       try {
-        const myCommands = bot.commands.filter(
-          c => c.conf.permLevel <= bot.permlevel(msg)
-        );
+        const myCommands = bot.commands.filter(async (c) => {return await bot.utils.getPermission(bot,msg.author,msg.guild,c.conf.permRequired).valid});
 
         var help = new Discord.MessageEmbed()
           .setAuthor(
@@ -27,10 +27,10 @@ class help extends Command {
           .setColor(msg.color)
           .setDescription(
             "**My prefix for this server is `" +
-            msg.prefix +
+            prefix +
             "`.**" +
             "\n\nFor details regarding a specific command, use " +
-            msg.prefix +
+            prefix +
             "help <command-name>."
           )
           .setTimestamp()

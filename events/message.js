@@ -16,11 +16,7 @@ module.exports = class {
 
     if (!msg.channel.permissionsFor(msg.guild.me).has('SEND_MESSAGES')) return;
 
-    let prefixes = await bot.database.getPrefix(msg.guild.id);
-    if (prefixes == false) {
-      prefixes = [bot.config.PREFIX];
-    }
-    prefixes.push(`<@!${bot.user.id}>`);
+    let prefixes = await bot.utils.getPrefixes(bot, msg.guild);
 
     for (let prefix of prefixes) {
       if (msg.content.toLowerCase().startsWith(prefix)) {
@@ -55,32 +51,12 @@ module.exports = class {
       return;
     }
 
-    let permission = false;
-    if (cmd.conf.permRequired == false) { //no perms required
-      permission = "USER";
-    } else if (cmd.conf.permRequired == "BOTADMIN") {
-      let staffUser = await bot.database.getBotStaff(msg.author.id);
-      if (staffUser && (staffUser.role == "BOTADMIN" || staffUser.role == "BOTOWNER")) {
-        permission = "BOTADMIN";
-      } else {
-        let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
-        msg.reply(`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
-        return;
-      }
-    } else if (cmd.conf.permRequired == "BOTOWNER") {
-      let staffUser = await bot.database.getBotStaff(msg.author.id);
-      if (staffUser && staffUser.role == "BOTOWNER") {
-        permission = "BOTOWNER";
-      } else {
-        let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
-        msg.reply(`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
-        return;
-      }
-    } else if (await msg.guild.member(msg.author).hasPermission(cmd.conf.permRequired)) {
-      permission = cmd.conf.permRequired;
-    } else {
-      msg.reply(`You do not have the required permissions to run this command: **${cmd.conf.permRequired}**`);
+    let permission = bot.utils.getPermission(bot, msg.author, msg.guild, cmd.conf.permRequired);
+    if (permission.valid == false) {
+      msg.reply(permission.reply);
       return;
+    } else {
+      permission = permission.level;
     }
 
     msg.flags = [];

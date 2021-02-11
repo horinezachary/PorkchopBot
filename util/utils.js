@@ -146,3 +146,42 @@ exports.tagReplacer = async function (member, guild, embed) {
   embed = embed.replace(/\{\{(timestamp)\}\}/g,(match,p1) => {return tags[p1];});
   return embed;
 };
+exports.getPermission = async (bot,author,guild,permRequired) => {
+  let permission = false;
+  if (permRequired == false) { //no perms required
+    permission = "USER";
+  } else if (permRequired == "BOTADMIN") {
+    let staffUser = await bot.database.getBotStaff(author.id);
+    if (staffUser && (staffUser.role == "BOTADMIN" || staffUser.role == "BOTOWNER")) {
+      permission = "BOTADMIN";
+    } else {
+      let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
+      let message = (`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
+      return {valid: false, message: message};
+    }
+  } else if (permRequired == "BOTOWNER") {
+    let staffUser = await bot.database.getBotStaff(author.id);
+    if (staffUser && staffUser.role == "BOTOWNER") {
+      permission = "BOTOWNER";
+    } else {
+      let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
+      let message = (`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
+      return {valid: false, message: message};
+    }
+  } else if (await guild.member(author).hasPermission(permRequired)) {
+    permission = permRequired;
+  } else {
+    let message = (`You do not have the required permissions to run this command: **${permRequired}**`);
+    return {valid: false, message: message};
+  }
+  return {valid: true, level: permission}
+}
+
+exports.getPrefixes = async (bot,guild) => {
+  let prefixes = await bot.database.getPrefix(guild.id);
+  if (prefixes == false) {
+    prefixes = [bot.config.PREFIX];
+  }
+  prefixes.push(`<@!${bot.user.id}>`);
+  return prefixes;
+}
