@@ -18,7 +18,7 @@ class Database {
       let prefixes = [];
       let [guildLines] = await this.query(`SELECT * FROM guild WHERE guild_id = '${guild_id}'`);
       if (guildLines) {
-        for (guild of guildLines) {
+        for (let guild of guildLines) {
           prefixes.push(guild.prefix);
         }
         return prefixes;

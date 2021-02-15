@@ -157,7 +157,6 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
       let message = (`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
-      console.log("return false");
       return {valid: false, message: message};
     }
   } else if (permRequired == "BOTOWNER") {
@@ -167,25 +166,27 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
       let message = (`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
-      console.log("return false");
       return {valid:false, message: message};
     }
   } else if (await guild.member(author).hasPermission(permRequired)) {
     permission = permRequired;
   } else {
     let message = (`You do not have the required permissions to run this command: **${permRequired}**`);
-    console.log("return false");
     return {valid: false, message: message};
   }
-  console.log("return true");
   return {valid: true, level: permission}
 }
 
 exports.getPrefixes = async (bot,guild) => {
+  let res = [];
   let prefixes = await bot.database.getPrefix(guild.id);
   if (prefixes == false) {
-    prefixes = [bot.config.PREFIX];
+    res.push(bot.config.PREFIX);
+  } else {
+    console.log(prefixes);
+    res.push(prefixes[0])
   }
-  prefixes.push(`<@!${bot.user.id}>`);
-  return prefixes;
+  res.push(`<@!${bot.user.id}>`);
+  console.log(res);
+  return res;
 }
