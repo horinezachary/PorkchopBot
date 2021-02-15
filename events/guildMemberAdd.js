@@ -20,11 +20,9 @@ module.exports = class {
     //welcome
     let welcome = await bot.database.getGuildWelcome(member.guild.id);
     if (welcome) {
-      console.log(welcome);
       console.log(welcome.embed);
       let welcomeChannel = await member.guild.channels.cache.get(welcome.channel_id);
       let embed = await bot.utils.tagReplacer(member,member.guild,welcome.embed);
-      console.log(embed);
       let jsonObj = JSON.parse(embed);
       welcomeChannel.send({embed: jsonObj});
     }

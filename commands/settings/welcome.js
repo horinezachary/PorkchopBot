@@ -7,7 +7,8 @@ class welcome extends Command {
       description: "Update the welcome message!",
       usage: "welcome [channel] <json>",
       aliases: [],
-      permRequired: "MANAGE_SERVER"
+      permRequired: "MANAGE_GUILD",
+      guildOnly: true
     });
   }
 

@@ -51,9 +51,9 @@ module.exports = class {
       return;
     }
 
-    let permission = bot.utils.getPermission(bot, msg.author, msg.guild, cmd.conf.permRequired);
-    if (permission.valid == false) {
-      msg.reply(permission.reply);
+    let permission = await bot.utils.getPermission(bot, msg.author, msg.guild, cmd.conf.permRequired);
+    if (!permission.valid) {
+      msg.reply(permission.message);
       return;
     } else {
       permission = permission.level;
@@ -69,7 +69,7 @@ module.exports = class {
     cmd.run(bot, msg, args, permission).catch(err => {
       msg.channel.send(
         "You shouldn't ever get this message. Please contact **" +
-        bot.users.cache.get(bot.config.OVERLORD_ID).tag +
+        bot.users.fetch(bot.config.OVERLORD_ID).tag +
         '** with this error:\n```LDIF\n' + err.stack +'```');
     });
 

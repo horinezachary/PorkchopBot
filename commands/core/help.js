@@ -15,10 +15,21 @@ class help extends Command {
   async run(bot, msg, args, level) {
     let prefix = await bot.utils.getPrefixes(bot, msg.guild);
     prefix = prefix[0];
+    let perms = [];
+    for (let c of bot.commands) {
+      console.log(c[1]);
+      let perm = await bot.utils.getPermission(bot,msg.author,msg.guild,c[1].conf.permRequired);
+      if(perm.valid){
+        console.log(c[1].help.name);
+        perms.push(c[1].conf.permRequired);
+      } else {
+      }
+    }
     if (!args[0]) {
       try {
-        const myCommands = bot.commands.filter(async (c) => {return await bot.utils.getPermission(bot,msg.author,msg.guild,c.conf.permRequired).valid});
-
+        let myCommands = bot.commands.filter((c) => {
+          return perms.includes(c.conf.permRequired);
+        });
         var help = new Discord.MessageEmbed()
           .setAuthor(
             bot.user.username + " Help | " + myCommands.size + " Commands",
@@ -48,7 +59,7 @@ class help extends Command {
               : -1;
         });
         sorted.forEach(c => {
-          const cat = toProperCase(c.type);
+          const cat = toProperCase(getType(c.conf.location));
           if (currentCategory !== cat && currentCategory !== ``) {
             help.addField(currentCategory + " Commands:", output);
             output = "";

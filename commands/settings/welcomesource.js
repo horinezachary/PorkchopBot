@@ -7,7 +7,8 @@ class welcomesource extends Command {
       description: "Retrieve the channel and JSON for the welcome message",
       usage: "welcomesource",
       aliases: [],
-      permRequired: "MANAGE_SERVER"
+      permRequired: "MANAGE_GUILD",
+      guildOnly: true
     });
   }
 

@@ -148,7 +148,7 @@ exports.tagReplacer = async function (member, guild, embed) {
 };
 exports.getPermission = async (bot,author,guild,permRequired) => {
   let permission = false;
-  if (permRequired == false) { //no perms required
+  if (permRequired == false || permRequired == "USER") { //no perms required
     permission = "USER";
   } else if (permRequired == "BOTADMIN") {
     let staffUser = await bot.database.getBotStaff(author.id);
@@ -157,6 +157,7 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
       let message = (`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
+      console.log("return false");
       return {valid: false, message: message};
     }
   } else if (permRequired == "BOTOWNER") {
@@ -166,14 +167,17 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
       let message = (`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
-      return {valid: false, message: message};
+      console.log("return false");
+      return {valid:false, message: message};
     }
   } else if (await guild.member(author).hasPermission(permRequired)) {
     permission = permRequired;
   } else {
     let message = (`You do not have the required permissions to run this command: **${permRequired}**`);
+    console.log("return false");
     return {valid: false, message: message};
   }
+  console.log("return true");
   return {valid: true, level: permission}
 }
 
