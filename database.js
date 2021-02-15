@@ -16,7 +16,7 @@ class Database {
 
     this.getPrefix = async (guild_id) => {
       let prefixes = [];
-      let [guildLines] = await this.query(`SELECT * FROM guilds WHERE guild_id = '${guild_id}'`);
+      let [guildLines] = await this.query(`SELECT * FROM guild WHERE guild_id = '${guild_id}'`);
       if (guildLines) {
         for (guild of guildLines) {
           prefixes.push(guild.prefix);
