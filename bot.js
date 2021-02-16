@@ -7,7 +7,7 @@ const BOT_ID = require('./config.js').BOT_ID;
 console.log("NODE VERSION: " + process.version);
 
 const {Client, Collection} = require('discord.js');
-const Database = require("./database.js");
+const Database = require("./util/database.js");
 const path = require("path");
 const klaw = require("klaw");
 
