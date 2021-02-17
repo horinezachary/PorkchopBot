@@ -183,10 +183,8 @@ exports.getPrefixes = async (bot,guild) => {
   if (prefixes == false) {
     res.push(bot.config.PREFIX);
   } else {
-    console.log(prefixes);
     res.push(prefixes[0])
   }
   res.push(`<@!${bot.user.id}>`);
-  console.log(res);
   return res;
 }
