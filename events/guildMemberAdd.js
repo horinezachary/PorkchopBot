@@ -26,6 +26,10 @@ module.exports = class {
       let jsonObj = JSON.parse(embed);
       welcomeChannel.send({embed: jsonObj});
     }
+
+    //create accounts if they don't already exist
+    this.database.query(`INSERT IGNORE INTO guild_member_account(user_id,guild_id) VALUES("${member.id}","${member.guild.id}")`);
+    this.database.query(`INSERT IGNORE INTO global_user_account(user_id) VALUES("${member.id}")`);
   }
 
 }

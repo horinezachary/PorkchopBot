@@ -13,6 +13,7 @@ class Command {
       guildOnly = false,
       aliases = [],
       permRequired = false,
+      premiumTier = false,
       location = ""
     }
   ) {
