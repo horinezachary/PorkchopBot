@@ -10,7 +10,7 @@ class Economy {
     if (mode.length > 0) {
       return mode[0].guild_economy_mode;
     } else {
-      await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix) VALUES("${guild_id}","${this.bot.config.PREFIX}")`);
+      await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.prefix}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
       return "GLOBAL";
     }
   }
@@ -82,7 +82,7 @@ class Economy {
   async pay(guild_id, user_id_from, user_id_to, amount) {
     let fromBal = await this.getBal(guild_id, user_id_from);
     let toBal = await this.getBal(guild_id, user_id_to);
-    if (this.getGuildEconomyMode(guild_id) == "GUILD" && bot.util.inGuild(user_id_from) && bot.util.inGuild(user_id_to)) {
+    if (await this.getGuildEconomyMode(guild_id) == "GUILD" && this.bot.util.inGuild(user_id_from) && this.bot.util.inGuild(user_id_to)) {
       return {message: "Recieving user is not in guild"};
     } else if (fromBal < amount){
       return {message: "Sending user doesn't have enough money.\nBalance: `"+fromBal+"`"};
@@ -90,6 +90,62 @@ class Economy {
       this.addBal(guild_id, user_id_to, amount);
       this.subBal(guild_id, user_id_from, amount);
       return true;
+    }
+  }
+
+  async daily(user_id,guild_id) {
+    let mode = await this.getGuildEconomyMode(guild_id);
+    let dailyAmount = 0;
+    let lastDaily = Date.now();
+    if (mode == "GUILD") {
+      //guild daily ammount
+      let [guild] = await this.database.query(`SELECT * FROM guild WHERE guild_id = "${guild_id}"`);
+      if (guild.length >= 1) {
+        dailyAmount = guild[0].guild_economy_daily
+      } else {
+        await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.prefix}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
+        dailyAmount = this.GLOBAL_DAILY;
+      }
+      //last daily
+      let [user] = await this.database.query(`SELECT * FROM guild_member_account WHERE user_id = "${user_id}" AND guild_id = "${guild_id}"`);
+      if (user.length < 1) {
+        await this.database.query(`INSERT IGNORE INTO guild_member_account(user_id,guild_id) VALUES("${user_id}","${guild_id}")`);
+        lastDaily = 0;
+      } else {
+        lastDaily = user[0].lastDaily;
+      }
+      lastDaily = Date.parse(lastDaily);
+      if(typeof(lastDaily) == "number" && isNaN(lastDaily)) {
+        lastDaily = 0;
+      }
+      if (Date.now() - lastDaily >= 86400000) {
+        await this.database.query(`UPDATE guild_member_account SET lastDaily = "${new Date().toISOString().slice(0, 19).replace('T', ' ')}" WHERE user_id = "${user_id}";`);
+        let newBal = await this.addBal(guild_id,user_id,dailyAmount);
+        return newBal;
+      } else {
+        return {result:false,lastDaily:lastDaily};
+      }
+    } else if (mode == "GLOBAL") {
+      //global daily amount
+      dailyAmount = this.GLOBAL_DAILY;
+      let [user] = await this.database.query(`SELECT * FROM global_user_account WHERE user_id = "${user_id}"`);
+      if (user.length < 1) {
+        await this.database.query(`INSERT IGNORE INTO global_user_account(user_id) VALUES("${user_id}")`);
+        lastDaily = 0;
+      } else {
+        lastDaily = user[0].lastDaily;
+      }
+      lastDaily = Date.parse(lastDaily);
+      if(typeof(lastDaily) == "number" && isNaN(lastDaily)) {
+        lastDaily = 0;
+      }
+      if (Date.now() - lastDaily >= 86400000) {
+        await this.database.query(`UPDATE global_user_account SET lastDaily = "${new Date().toISOString().slice(0, 19).replace('T', ' ')}" WHERE user_id = "${user_id}";`);
+        let newBal = await this.addBal(guild_id,user_id,dailyAmount);
+        return newBal;
+      } else {
+        return {result:false,lastDaily:lastDaily};
+      }
     }
   }
 }
