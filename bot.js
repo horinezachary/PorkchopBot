@@ -8,6 +8,7 @@ console.log("NODE VERSION: " + process.version);
 
 const {Client, Collection} = require('discord.js');
 const Database = require("./util/database.js");
+const Economy  = require("./util/economy.js");
 const path = require("path");
 const klaw = require("klaw");
 
@@ -26,6 +27,7 @@ class PorkchopBot extends Client {
     this.apis = {};
 
     this.database = new Database(this.config.database);
+    this.economy = new Economy(this,this.database);
 
     this.loadCommand = (commandPath, commandName) => {
       try {
