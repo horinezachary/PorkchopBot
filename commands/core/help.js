@@ -17,10 +17,8 @@ class help extends Command {
     prefix = prefix[0];
     let perms = [];
     for (let c of bot.commands) {
-      console.log(c[1]);
       let perm = await bot.utils.getPermission(bot,msg.author,msg.guild,c[1].conf.permRequired);
       if(perm.valid){
-        console.log(c[1].help.name);
         perms.push(c[1].conf.permRequired);
       } else {
       }
