@@ -146,6 +146,16 @@ exports.tagReplacer = async function (member, guild, embed) {
   embed = embed.replace(/\{\{(timestamp)\}\}/g,(match,p1) => {return tags[p1];});
   return embed;
 };
+
+exports.parseInvites = async (guild) => {
+  let invites = await guild.fetchInvites().catch(console.error);
+  let inviteList = [];
+  for (invite of invites) {
+    inviteList.push({Code: invite[1].code, Uses: invite[1].uses, Inviter: invite[1].inviter});
+  }
+  return inviteList;
+}
+
 exports.getPermission = async (bot,author,guild,permRequired) => {
   let permission = false;
   if (permRequired == false || permRequired == "USER") { //no perms required

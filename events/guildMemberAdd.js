@@ -32,6 +32,13 @@ module.exports = class {
     this.database.query(`INSERT IGNORE INTO global_user_account(user_id) VALUES("${member.id}")`);
   }
 
+  //invites
+  let invites = await bot.utils.parseInvites(member.guild);
+  let cachedInvites = await bot.inviteCache.find(inv => {return inv.guild_id == member.guild.id});
+  for (let invite of invites) {
+    let cacheInv = cachedInvites.find(inv => {return inv.code == invite.code});
+    //todo: this
+  }
 }
 
 
