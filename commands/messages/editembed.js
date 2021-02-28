@@ -1,12 +1,12 @@
 const Command = require(`${process.cwd()}/base/Command.js`);
 
-class embedsource extends Command {
+class editembed extends Command {
   constructor(client) {
     super(client, {
-      name: "embedsource",
-      description: "Retrieve the JSON for a given embed",
-      usage: "embedsource [channel] <message_id>",
-      aliases: [],
+      name: "editembed",
+      description: "Update an embed!",
+      usage: "editembed [channel] <message_id> <json>",
+      aliases: ["edembed"],
       permRequired: "MANAGE_MESSAGES"
     });
   }
@@ -33,16 +33,12 @@ class embedsource extends Command {
       }
     }
     if (message) {
-      msg.channel.send({embed: new MessageEmbed()
-        .setAuthor("Embed Source: "+message.id, bot.user.avatarURL())
-        .setColor(bot.config.DEFAULT_EMBED_COLOR)
-  //      .setDescription(JSON.stringify(message.embeds))
-        .setDescription("```json\n"+JSON.stringify(message.embeds[0],null,2)+"```")
-        .setFooter("Powered by " + bot.user.username)
-        .setTimestamp()
-      });
+      let jsonString = msg.content.substr(msg.content.indexOf("{"), msg.content.lastIndexOf("}"));
+      let jsonObj = JSON.parse(jsonString);
+      console.log(jsonObj);
+      message.edit({embed: jsonObj});
     }
   }
 }
 
-module.exports = embedsource;
+module.exports = editembed;
