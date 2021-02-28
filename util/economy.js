@@ -10,7 +10,7 @@ class Economy {
     if (mode.length > 0) {
       return mode[0].guild_economy_mode;
     } else {
-      await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.prefix}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
+      await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.PREFIX}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
       return "GLOBAL";
     }
   }
@@ -103,7 +103,7 @@ class Economy {
       if (guild.length >= 1) {
         dailyAmount = guild[0].guild_economy_daily
       } else {
-        await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.prefix}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
+        await this.database.query(`INSERT IGNORE INTO guild(guild_id,prefix,guild_economy_mode,guild_economy_daily) VALUES("${guild_id}","${this.bot.config.PREFIX}","GLOBAL","${this.bot.config.economy.GLOBAL_DAILY}")`);
         dailyAmount = this.GLOBAL_DAILY;
       }
       //last daily
