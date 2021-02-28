@@ -130,21 +130,21 @@ class blackjack extends Command {
           //dealer busts
           embed.description = `Dealer's cards: ${cpu_hand}` +
           `\n<@${msg.author.id}>'s cards: ${player_hand}` +
-          `\nDealer has busted, You win " + 2 * amount + " credits`;
+          `\nDealer has busted, You win ${2 * amount} credits`;
           blackjackMessage.edit({embed: embed});
           bot.economy.addBal(msg.guild.id, msg.author.id, amount);
         } else if (winner == 1) {
           //dealer win
           embed.description = `Dealer's cards: ${cpu_hand}` +
           `\n<@${msg.author.id}>'s cards: ${player_hand}` +
-          `\nDealer wins, You lose " + amount + " credits`;
+          `\nDealer wins, You lose ${amount} credits`;
           blackjackMessage.edit({embed: embed});
           bot.economy.subBal(msg.guild.id, msg.author.id, amount);
         } else if (winner == 3) {
           //dealer win
           embed.description = `Dealer's cards: ${cpu_hand}` +
           `\n<@${msg.author.id}>'s cards: ${player_hand}` +
-          `\nDealer has busted, You win " + 2 * amount + " credits`;
+          `\nDealer has busted, You win ${2 * amount} credits`;
           blackjackMessage.edit({embed: embed});
           blackjackMessage.edit({
             embed:
@@ -165,7 +165,7 @@ class blackjack extends Command {
           //push
           embed.description = `Dealer's cards: ${cpu_hand}` +
           `\n<@${msg.author.id}>'s cards: ${player_hand}` +
-          `\nPush! You win back your " + amount + " credits`;
+          `\nPush! You win back your ${amount} credits`;
           blackjackMessage.edit({embed: embed});
           //bot.economy.addBal(msg.guild.id, msg.author.id, amount);
           /*
