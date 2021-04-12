@@ -156,7 +156,7 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
       permission = "BOTADMIN";
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
-      let message = (`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
+      let message = (`This command is reserved for <@${bot.user.id}> global admins only. If you think this is an error, please contact **${bot.config.OVERLORD_USERNAME}**.`);
       return {valid: false, message: message};
     }
   } else if (permRequired == "BOTOWNER") {
@@ -165,7 +165,7 @@ exports.getPermission = async (bot,author,guild,permRequired) => {
       permission = "BOTOWNER";
     } else {
       let overlord = await bot.users.fetch(bot.config.OVERLORD_ID);
-      let message = (`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${overlord.username}#${overlord.discriminator}**.`);
+      let message = (`This command is reserved for <@${bot.user.id}>'s owner only. If you think this is an error, please contact **${bot.config.OVERLORD_USERNAME}**.`);
       return {valid:false, message: message};
     }
   } else if (await guild.member(author).hasPermission(permRequired)) {

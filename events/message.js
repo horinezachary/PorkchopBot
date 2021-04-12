@@ -69,7 +69,7 @@ module.exports = class {
     cmd.run(bot, msg, args, permission).catch(err => {
       msg.channel.send(
         "You shouldn't ever get this message. Please contact **" +
-        bot.users.fetch(bot.config.OVERLORD_ID).tag +
+        bot.config.OVERLORD_USERNAME +
         '** with this error:\n```LDIF\n' + err.stack +'```');
     });
 
