@@ -34,7 +34,7 @@ module.exports = class {
 
     const args = preargs;
     args.push(json);
-    for (arg of postargs) {
+    for (let arg of postargs) {
       args.push(arg);
     }
 
