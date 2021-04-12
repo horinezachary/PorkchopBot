@@ -29,15 +29,17 @@ module.exports = class {
     //const args = msg.content.slice(msg.prefix.length).trim().split(/ +/g);
 
     const preargs = msg.content.substring(0,msg.content.indexOf("{")).slice(msg.prefix.length).trim().split(/ +/g);
-    const json = msg.content.substring(msg.content.indexOf("{"),msg.content.lastIndexOf("}"));
-    const postargs = msg.content.substring(msg.content.lastIndexOf("}")).trim().split(/ +/g);
+    const json = msg.content.substring(msg.content.indexOf("{"),msg.content.lastIndexOf("}")+1).trim();
+    const postargs = msg.content.substring(msg.content.lastIndexOf("}")+1).trim().split(/ +/g);
 
     const args = preargs;
     args.push(json);
     for (let arg of postargs) {
-      args.push(arg);
+      if (arg != '') {
+        console.log(arg);
+        args.push(arg);
+      }
     }
-
     const command = args.shift().toLowerCase();
     const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
     if (!cmd) return;
