@@ -188,7 +188,7 @@ exports.getPrefixes = async (bot,guild) => {
   res.push(`<@!${bot.user.id}>`);
   return res;
 
-exports.getArgs(prefix,content) {
+exports.getArgs = (prefix,content) => {
   const preargs = content.substring(0,content.indexOf("{")).slice(prefix.length).trim().split(/ +/g);
   const json = content.substring(content.indexOf("{"),content.lastIndexOf("}")+1).trim();
   const postargs = content.substring(content.lastIndexOf("}")+1).trim().split(/ +/g);
