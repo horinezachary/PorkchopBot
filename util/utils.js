@@ -187,22 +187,29 @@ exports.getPrefixes = async (bot,guild) => {
   }
   res.push(`<@!${bot.user.id}>`);
   return res;
-
-exports.getArgs = (prefix,content) => {
-  const preargs = content.substring(0,content.indexOf("{")).slice(prefix.length).trim().split(/ +/g);
-  const json = content.substring(content.indexOf("{"),content.lastIndexOf("}")+1).trim();
-  const postargs = content.substring(content.lastIndexOf("}")+1).trim().split(/ +/g);
-
-  const args = preargs;
-  args.push(json);
-  for (let arg of postargs) {
-    if (arg != '') {
-      console.log(arg);
-      args.push(arg);
-    }
-  }
-  return args;
 }
 
-
+exports.getArgs = (prefix,content) => {
+  if (content.includes("{") && content.includes("}")) {
+    let prestring = content.substring(prefix.length,content.indexOf("{"));
+    let preargs = prestring.trim().split(/ +/g);
+    let json = content.substring(content.indexOf("{"),content.lastIndexOf("}")+1).trim();
+    let poststring = content.substring(content.lastIndexOf("}")+1)
+    let postargs = poststring.trim().split(/ +/g);
+    const args = [];
+    for (let arg of preargs) {
+      if (arg != '') {
+        args.push(arg);
+      }
+    }
+    args.push(json);
+    for (let arg of postargs) {
+      if (arg != '') {
+        args.push(arg);
+      }
+    }
+  } else {
+    args = content.slice(prefix.length).trim().split(/ +/g);
+  }
+  return args;
 }
