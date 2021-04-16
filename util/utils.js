@@ -190,13 +190,13 @@ exports.getPrefixes = async (bot,guild) => {
 }
 
 exports.getArgs = (prefix,content) => {
+  const args = [];
   if (content.includes("{") && content.includes("}")) {
     let prestring = content.substring(prefix.length,content.indexOf("{"));
     let preargs = prestring.trim().split(/ +/g);
     let json = content.substring(content.indexOf("{"),content.lastIndexOf("}")+1).trim();
     let poststring = content.substring(content.lastIndexOf("}")+1)
     let postargs = poststring.trim().split(/ +/g);
-    const args = [];
     for (let arg of preargs) {
       if (arg != '') {
         args.push(arg);

@@ -28,7 +28,7 @@ module.exports = class {
 
     //const args = msg.content.slice(msg.prefix.length).trim().split(/ +/g);
 
-    let args = await bot.utils.getArgs(msg.prefix,msg.content);
+    const args = await bot.utils.getArgs(msg.prefix,msg.content);
     const command = args.shift().toLowerCase();
     const cmd = bot.commands.get(command) || bot.commands.get(bot.aliases.get(command));
     if (!cmd) return;
