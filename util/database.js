@@ -37,12 +37,36 @@ class Database {
     };
 
     this.isBlacklisted = async (guild_id, user_id) => {
-      let [blacklist] = await this.query(`SELECT * FROM blacklist WHERE user_id = '${user_id}' AND scope = 'GLOBAL' & (scope = 'GUILD' AND guild_id = '${guild_id}')`);
+      let [blacklist] = await this.query(`SELECT * FROM blacklist WHERE user_id = '${user_id}' AND scope = 'GLOBAL' OR (scope = 'GUILD' AND guild_id = '${guild_id}')`);
       if (!blacklist) {
         return false;
       } else {
-        return blacklist;
+        let obj = {};
+        obj.scope = "";
+        for (let row of blacklist) {
+          if (row.scope == "GLOBAL") {
+            obj.scope = "GLOBAL";
+            obj.user_id = row.user_id;
+            obj.moderator = row.moderator;
+            obj.reason = row.reason;
+            obj.timestamp = row.timestamp;
+          }
+          if (row.scope == "GUILD" && obj.scope != "GLOBAL") {
+            obj.scope = "GUILD";
+            obj.user_id = row.user_id;
+            obj.moderator = row.moderator;
+            obj.reason = row.reason;
+            obj.timestamp = row.timestamp;
+            obj.guild_id = row.guild_id;
+          }
+        }
+        return obj;
       }
+    };
+
+    this.blacklist = async (scope,guild_id,user_id,moderator,reason) => {
+      let result = await this.query(`INSERT INTO blacklist(scope,guild_id,user_id,moderator,reason,timestamp) VALUES('${scope}','${guild_id}','${user_id}','${moderator}','${reason}','${new Date().toISOString().slice(0, 19).replace('T', ' ')}')`);
+      return result;
     };
 
     this.newEmbed = async (guild_id, channel_id, message_id) => {
