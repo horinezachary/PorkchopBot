@@ -5,9 +5,9 @@ class blacklist extends Command {
   constructor(client) {
     super(client, {
       name: "blacklist",
-      description: "Blacklists a user from the bot by mention/id. use -G or -GLOBAL to blacklist the user in all servers",
+      description: "Blacklists a user from the bot by mention/id. use G or GLOBAL to blacklist the user in all servers",
       usage: "blacklist [G/GLOBAL] <user> <reason>",
-      aliases: [""],
+      aliases: ["bl"],
       permRequired: "BOTADMIN"
     });
   }
