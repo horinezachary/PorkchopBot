@@ -25,7 +25,7 @@ class blacklist extends Command {
       if (reasonStart) {
         reason += arg + " ";
       }
-      if (arg && arg.match(/(?:<@)?(?:[!])([0-9]{18})(?:>)?/g)) { //is a channel id or an id in general
+      if (arg && arg.match(/([0-9]{18})/g)) { //is a channel id or an id in general
         console.log(arg.match(/([0-9]{18})/g));
         let argUser = await msg.guild.members.cache.get(arg.match(/([0-9]{18})/g)[0]);
         if (argUser != undefined && user_id == "") {
