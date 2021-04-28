@@ -44,7 +44,7 @@ module.exports = class {
       let mod = await bot.users.fetch(blacklisted.moderator);
       response += ` by ${mod.tag}`;
       if (blacklisted.reason != "") {
-        response += ` for ${reason}`;
+        response += ` for ${blacklisted.reason}`;
       }
       msg.reply(response + ".");
       return;
