@@ -42,7 +42,6 @@ class Database {
         return false;
       } else {
         let obj = {};
-        obj.scope = "";
         for (let row of blacklist) {
           if (row.scope == "GLOBAL") {
             obj.scope = "GLOBAL";
@@ -60,7 +59,11 @@ class Database {
             obj.guild_id = row.guild_id;
           }
         }
-        return obj;
+        if (obj == {}) {
+          return false;
+        } else {
+          return obj;
+        }
       }
     };
 

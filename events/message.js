@@ -34,7 +34,8 @@ module.exports = class {
     if (!cmd) return;
 
     let blacklisted = await bot.database.isBlacklisted(msg.guild.id,msg.author.id);
-    if (blacklisted != false) {
+    console.log(blacklisted);
+    if (blacklisted.scope) {
       let response = `You have been banned from using the bot`
       if (blacklisted.scope == "GUILD") {
         response += ` in this server`;
