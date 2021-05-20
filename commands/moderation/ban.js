@@ -20,7 +20,7 @@ class ban extends Command {
       if (reasonStart) {
         reason += arg + " ";
       }
-      if (arg && arg.match(/([0-9]{18})/g)) { //is a channel id or an id in general
+      if (arg && arg.match(/([0-9]{18})/g)) { //is a user id or an id in general
         console.log(arg.match(/([0-9]{18})/g));
         let argUser = await msg.guild.members.cache.get(arg.match(/([0-9]{18})/g)[0]);
         if (argUser != undefined && user_id == "") {
@@ -30,17 +30,21 @@ class ban extends Command {
       }
     }
     reason = reason.trim();
-    let options = {reason: reason};
-    let result = false;
-    msg.guild.members.ban(user_id,options).then(
-      msg.reply(new Discord.MessageEmbed()
-        .setAuthor("User Banned", bot.user.avatarURL())
-        .setColor(bot.config.DEFAULT_EMBED_COLOR)
-        .setFooter(msg.author.username, msg.author.avatarURL())
-        .setTimestamp()
-        .setDescription(`User:<@${user_id}> (${user_id})\n`+
-                        `Moderator: <@${msg.author.id}>\n`+
-                        "Reason: ```"+reason+"```")));
+    if (user_id != "") {
+      let options = {reason: reason};
+      let result = false;
+      msg.guild.members.ban(user_id,options).then(
+        msg.reply(new Discord.MessageEmbed()
+          .setAuthor("User Banned", bot.user.avatarURL())
+          .setColor(bot.config.DEFAULT_EMBED_COLOR)
+          .setFooter(msg.author.username, msg.author.avatarURL())
+          .setTimestamp()
+          .setDescription(`User:<@${user_id}> (${user_id})\n`+
+                          `Moderator: <@${msg.author.id}>\n`+
+                          "Reason: ```"+reason+"```")));
+    } else {
+      //fuck
+    }
   }
 }
 
