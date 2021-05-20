@@ -22,7 +22,7 @@ class unban extends Command {
       }
       if (arg && arg.match(/([0-9]{18})/g)) { //is a user id or an id in general
         if (user_id == "") {
-          user_id = arg.match(/([0-9]{18})/g);
+          user_id = arg.match(/([0-9]{18})/g)[0];
           reasonStart = true;
         }
       }
@@ -37,8 +37,7 @@ class unban extends Command {
         .setFooter(msg.author.username, msg.author.avatarURL())
         .setTimestamp()
         .setDescription(`User:<@${user_id}> (${user_id})\n`+
-                        `Moderator: <@${msg.author.id}>\n`+
-                        "Reason: ```"+reason+"```")));
+                        `Moderator: <@${msg.author.id}>\n`)));
   }
 }
 

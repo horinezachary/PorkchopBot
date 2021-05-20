@@ -14,6 +14,15 @@ class Database {
       });
     };
 
+    this.getGuildInfo = async (guild_id) => {
+      let [guildLines] = await this.query(`SELECT * FROM guild WHERE guild_id = '${guild_id}'`);
+      if (guildLines) {
+        return guildLines[0];
+      } else {
+        return false;
+      }
+    }
+
     this.getPrefix = async (guild_id) => {
       let prefixes = [];
       let [guildLines] = await this.query(`SELECT * FROM guild WHERE guild_id = '${guild_id}'`);
