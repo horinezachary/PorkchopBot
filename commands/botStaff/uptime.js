@@ -12,7 +12,7 @@ class uptime extends Command {
   }
 
   async run(bot, msg, args, level) {
-    let { MessageEmbed } = require("discord.js");
+    let { EmbedBuilder } = require("discord.js");
     var date = new Date(bot.uptime);
     var strDate = "**";
     strDate += date.getUTCDate() - 1 + " days, ";
@@ -21,7 +21,7 @@ class uptime extends Command {
     strDate += date.getUTCSeconds() + " seconds**";
 
     msg.channel.send({
-      embed: new MessageEmbed()
+      embed: new EmbedBuilder()
         .setAuthor(bot.user.username + " Uptime", bot.user.avatarURL())
         .setColor(msg.color)
         .setDescription(strDate)
