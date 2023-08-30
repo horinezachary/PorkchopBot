@@ -5,7 +5,6 @@ const DEFAULT_EMBED_COLOR = "FF6600";
 const BOT_ID = require('./config.js').BOT_ID;
 
 console.log("NODE VERSION: " + process.version);
-console.log("discord.js Version: " + packageJSON.dependencies["discord.js"]);
 
 const {Client, Collection} = require('discord.js');
 const Database = require("./util/database.js");
@@ -13,6 +12,8 @@ const Economy  = require("./util/economy.js");
 //const Webserver = require("./webserver.js");
 const path = require("path");
 const klaw = require("klaw");
+
+console.log("discord.js Version: " + packageJSON.dependencies["discord.js"]);
 
 class PorkchopBot extends Client {
   constructor(options) {
