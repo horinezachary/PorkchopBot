@@ -13,7 +13,7 @@ const Economy  = require("./util/economy.js");
 const path = require("path");
 const klaw = require("klaw");
 
-console.log("discord.js Version: " + packageJSON.dependencies["discord.js"]);
+console.log("discord.js Version: " + require("discord.js").version);
 
 class PorkchopBot extends Client {
   constructor(options) {
