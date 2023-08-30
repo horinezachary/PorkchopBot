@@ -5,10 +5,12 @@ const DEFAULT_EMBED_COLOR = "FF6600";
 const BOT_ID = require('./config.js').BOT_ID;
 
 console.log("NODE VERSION: " + process.version);
+console.log("discord.js Version: " + packageJSON.dependencies["discord.js"]);
 
 const {Client, Collection} = require('discord.js');
 const Database = require("./util/database.js");
 const Economy  = require("./util/economy.js");
+//const Webserver = require("./webserver.js");
 const path = require("path");
 const klaw = require("klaw");
 
@@ -28,6 +30,10 @@ class PorkchopBot extends Client {
 
     this.database = new Database(this.config.database);
     this.economy = new Economy(this,this.database);
+    //this.webserver = new Webserver(this,this.database);
+    //this.webserver.start();
+    //this.webserver.get();
+    //this.webserver.post();
 
     this.loadCommand = (commandPath, commandName) => {
       try {
@@ -73,7 +79,7 @@ class PorkchopBot extends Client {
   }
 }
 
-const bot = new PorkchopBot({fetchAllMambers: true});
+const bot = new PorkchopBot({fetchAllMembers: true});
 
 const init = async () => {
   const commandList = [];
